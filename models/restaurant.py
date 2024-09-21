@@ -1,4 +1,5 @@
 from models.review import Review
+from models.menu.menu_item import MenuItem
 
 
 class Restaurant:
@@ -9,6 +10,7 @@ class Restaurant:
         self._category = _category.upper()
         self._active = False
         self._score = []
+        self._menu = []
         Restaurant.restaurants.append(self)
 
     def __str__(self):
@@ -42,3 +44,17 @@ class Restaurant:
         score_number = len(self._score)
         average = round(score_sum / score_number, 1)
         return average
+
+    def add_to_menu(self, item):
+        if isinstance(item, MenuItem):
+            self._menu.append(item)
+    @property
+    def display_menu(self):
+        print(f"{self._name}'s menu\n")
+        for i,item in enumerate(self._menu, start=1):
+            if hasattr(item, 'description'):
+                message_meal = f'{i}. Name: {item._name} | Price: R$ {item._price} | Description: {item.description}'
+                print(message_meal)
+            else:
+                message_drink = f'{i}. Name: {item._name} | Price: R$ {item._price} | Size: {item.size}'
+                print(message_drink)
